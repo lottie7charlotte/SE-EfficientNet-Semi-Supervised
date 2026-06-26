@@ -11,7 +11,7 @@ from data_loader import get_dataloaders, UnlabeledDataset, get_transforms
 from utils import set_seed
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 CHECKPOINT = "./checkpoints/resnet50_best.pth"
 NUM_CLASSES = 10
 BATCH_SIZE = 4
