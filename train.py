@@ -11,7 +11,7 @@ from model import get_model
 from utils import set_seed
 
 # ==========================================
-# 1. 设置随机种子 (先用 1024 跑，跑完改成 2026 再跑一次)
+# 1. 设置随机种子 
 # ==========================================
 set_seed(2026)
 
@@ -23,7 +23,7 @@ BATCH_SIZE = 4  # 降为 4，拯救 4GB 显存
 EPOCHS = 15
 LR = 1e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 SAVE_DIR = "./checkpoints"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
@@ -113,8 +113,7 @@ def main():
         # 保存当前随机种子下的最佳模型
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            # 存为一个临时的名字，避免覆盖你之前最好的 base_best.pth
-            torch.save(model.state_dict(), os.path.join(SAVE_DIR, "seed_temp_best.pth"))
+            torch.save(model.state_dict(), os.path.join(SAVE_DIR, "base_best.pth"))
             print(f"  -> 保存最佳模型 (Val Acc: {val_acc:.4f})")
 
     print(f"\n训练完成！当前随机种子下最佳验证准确率: {best_val_acc:.4f}")
