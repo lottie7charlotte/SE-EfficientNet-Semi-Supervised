@@ -12,13 +12,13 @@ from data_loader import get_dataloaders, UnlabeledDataset, get_transforms
 from utils import set_seed
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
-CHECKPOINT = "./checkpoints/base_best.pth"  # 指向 99.29% 的权重
+DATA_ROOT = r"./data/RS_Classification"
+CHECKPOINT = "./checkpoints/base_best.pth" 
 NUM_CLASSES = 10
 
 # ================== 核心超参数区 ==================
 BATCH_SIZE = 4  # 降回 4，防 OOM
-CONFIDENCE_THRESHOLD = 0.90  # 恢复到你论文中最终承诺的 0.90
+CONFIDENCE_THRESHOLD = 0.90  # 恢复到论文中最终承诺的 0.90
 MAX_PER_CLASS = 97  # 严格履行完美均衡
 
 
