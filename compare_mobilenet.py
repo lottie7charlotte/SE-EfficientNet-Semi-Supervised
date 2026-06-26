@@ -14,7 +14,7 @@ BATCH_SIZE = 4  # 核心：强制降为 4 防 OOM
 EPOCHS = 15
 LR = 1e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 SAVE_DIR = "./checkpoints"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
