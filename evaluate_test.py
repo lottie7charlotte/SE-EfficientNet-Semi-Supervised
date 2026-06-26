@@ -10,7 +10,7 @@ from model import get_model  # 你的主模型
 from model_no_se import get_pure_efficientnet  # 无SE模型
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 NUM_CLASSES = 10
 # 测试阶段无梯度，显存占用极小，Batch Size 开到 16 毫无压力
 BATCH_SIZE = 16
@@ -109,7 +109,7 @@ def main():
     effnet_se_final = get_model(num_classes=NUM_CLASSES, pretrained=False)
     test_model(effnet_se_final, "SE-EffNet (半监督)", "./checkpoints/final_best.pth", test_loader)
 
-    print("🎉 所有模型的最终 Test Accuracy 已生成！请将上述数据填入论文表格。")
+    print("🎉 所有模型的最终 Test Accuracy 已生成")
 
 
 if __name__ == "__main__":
