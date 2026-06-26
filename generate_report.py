@@ -9,7 +9,7 @@ from model import get_model
 NUM_CLASSES = 10
 BATCH_SIZE = 16
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 CHECKPOINT = "./checkpoints/final_best.pth"  # 使用你最强模型的权重
 CLASS_NAMES = ['airplane', 'airport', 'beach', 'bridge', 'forest',
                'freeway', 'harbor', 'industrial', 'parking', 'stadium']
@@ -46,7 +46,7 @@ def main():
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.savefig('new_confusion_matrix.png')
-    print("\n✅ 全新的高清混淆矩阵已保存为 'new_confusion_matrix.png'，请替换论文里的 Figure 8！")
+    print("\n✅ 全新的高清混淆矩阵已保存为 'new_confusion_matrix.png'！")
 
 
 if __name__ == "__main__":
