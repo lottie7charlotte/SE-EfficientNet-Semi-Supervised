@@ -8,7 +8,7 @@ from tqdm import tqdm
 import numpy as np
 from sklearn.metrics import f1_score
 
-# ================== 导入你的模块 ==================
+# ================== 导入模块 ==================
 from data_loader import get_dataloaders, UnlabeledDataset, get_transforms
 from model import get_model  # SE 模型
 from model_no_se import get_pure_efficientnet  # No-SE 模型
@@ -16,7 +16,7 @@ from utils import set_seed
 
 # ================== 核心配置区 ==================
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 CHECKPOINT_DIR = "./checkpoints_variance"
 os.makedirs(CHECKPOINT_DIR, exist_ok=True)
 
@@ -215,7 +215,7 @@ def main():
 
     # ================== 打印终极表格 ==================
     print("\n\n" + "=" * 80)
-    print("🎯 挂机任务圆满完成！这是你要复制进论文 Table 9 的终极数据 (Mean ± Std)")
+    print("🎯 挂机任务圆满完成！这是 Table 9 的数据 (Mean ± Std)")
     print("=" * 80)
     print(f"{'Category':<15} | {'No-SE Baseline (%)':<25} | {'SE-EfficientNet (%)':<25}")
     print("-" * 80)
