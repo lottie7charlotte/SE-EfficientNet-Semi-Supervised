@@ -10,8 +10,8 @@ from utils import set_seed
 from tqdm import tqdm
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
-CHECKPOINT = "./checkpoints/base_best.pth"  # 加载我们 99.57% 的纯监督主模型
+DATA_ROOT = r"./data/RS_Classification"
+CHECKPOINT = "./checkpoints/base_best.pth"  # 加载纯监督主模型
 NUM_CLASSES = 10
 BATCH_SIZE = 4  # 依然保持防爆显存的 4
 
@@ -127,7 +127,7 @@ def main():
     generate_pseudo_labels(model, 1.1)
 
     print("\n" + "=" * 50)
-    print("📊 敏感性分析结果汇总 (请将此填入论文)：")
+    print("📊 敏感性分析结果汇总：")
     print(f"τ = 0.80 | 提取数量: {count_08} | Peak Acc: {acc_08 * 100:.2f}%")
     print(f"τ = 0.90 | 提取数量: 970 | Peak Acc: 99.86% (此为已知主实验)")
     print(f"τ = 0.95 | 提取数量: {count_095} | Peak Acc: {acc_095 * 100:.2f}%")
