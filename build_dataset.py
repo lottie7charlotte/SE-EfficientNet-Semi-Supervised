@@ -8,13 +8,13 @@ from utils import set_seed
 set_seed(2026)
 
 # ================= 配置区 =================
-# 你刚刚找到的源数据集路径 (包含 45 个类别，每个 700 张)
-SOURCE_DIR = r"E:\Project_Final\data\NWPU-RESISC45"
+# 源数据集路径 (包含 45 个类别，每个 700 张)
+SOURCE_DIR = r"./data/NWPU-RESISC45"
 
-# 新生成的数据集存放位置 (我们重新建一个干净的 RS_Classification)
-TARGET_DIR = r"E:\Project_Final\data\RS_Classification"
+# 新生成的数据集存放位置
+TARGET_DIR = r"./data/RS_Classification"
 
-# 你的 10 个目标类别
+# 10 个目标类别
 CLASSES = [
     "airplane", "airport", "beach", "bridge", "forest",
     "freeway", "harbor", "industrial_area", "parking_lot", "stadium"
