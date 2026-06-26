@@ -12,7 +12,7 @@ from model_no_se import get_pure_efficientnet
 from utils import set_seed
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 CHECKPOINT = "./checkpoints/effnet_no_se_base.pth"
 NUM_CLASSES = 10
 BATCH_SIZE = 4
@@ -104,14 +104,13 @@ def finetune():
                 val_total += labels.size(0)
         val_acc = val_correct / val_total
         scheduler.step()
-        # +++ 加上这三行打印代码，否则你跑完不知道成绩！ +++
+        # +++ 加上这三行打印代码，否则跑完不知道成绩！ +++
         print(f"Epoch {epoch}: Train Acc={train_acc:.4f}, Val Acc={val_acc:.4f}")
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             torch.save(model.state_dict(), "./checkpoints/effnet_no_se_final.pth")
             print(f"  -> 保存最佳模型 (Val Acc: {val_acc:.4f})")
 
-        # +++ 在 for 循环结束后，加上最后这句总结 +++
     print(f"\n✅ 无SE模块半监督微调完成！最佳验证准确率: {best_val_acc:.4f}")
 
 
