@@ -109,7 +109,7 @@ def main():
     effnet_se_final = get_model(num_classes=NUM_CLASSES, pretrained=False)
     test_model(effnet_se_final, "SE-EffNet (半监督)", "./checkpoints/final_best.pth", test_loader)
 
-    print("🎉 所有模型的最终 Test Accuracy 已生成")
+    print("🎉 所有模型的最终 Test Accuracy 已生成！请将上述数据填入论文表格。")
 
 
 if __name__ == "__main__":
