@@ -16,6 +16,7 @@ NUM_CLASSES = 10
 BATCH_SIZE = 4  # 依然保持防爆显存的 4
 
 
+
 def generate_pseudo_labels(model, threshold):
     # 1. 物理清理上一轮残留
     train_dir = os.path.join(DATA_ROOT, "train")
@@ -32,9 +33,11 @@ def generate_pseudo_labels(model, threshold):
     model.eval()
     transform = get_transforms(is_train=False)
     unlabeled_dataset = UnlabeledDataset(os.path.join(DATA_ROOT, "unlabeled"), transform=transform)
-    high_conf_samples = []
 
-    # 2. 生成新伪标签 (这里去掉了97张的硬性限制，为了真实反映阈值对数量的影响)
+    high_conf_samples = []
+    class_counts = {i: 0 for i in range(NUM_CLASSES)}
+
+    # 2. 生成新伪标签 (必须保持数量和类别平衡限制)
     with torch.no_grad():
         for image, img_path in tqdm(unlabeled_dataset, desc=f"Filtering (τ={threshold})"):
             image = image.unsqueeze(0).to(DEVICE)
@@ -43,12 +46,16 @@ def generate_pseudo_labels(model, threshold):
             conf, pred = probs.max(dim=1)
             conf, pred = conf.item(), pred.item()
 
-            if conf >= threshold:
+            if conf >= threshold and class_counts[pred] < 97:
                 high_conf_samples.append((img_path, pred, conf))
+                class_counts[pred] += 1
 
     # 3. 写入图片
+    CLASSES = ['airplane', 'airport', 'beach', 'bridge', 'forest', 'freeway', 'harbor', 'industrial_area',
+               'parking_lot', 'stadium']
+
     for img_path, label, _ in high_conf_samples:
-        cls_name = os.path.basename(os.path.dirname(img_path))
+        cls_name = CLASSES[label]
         dst_dir = os.path.join(DATA_ROOT, "train", cls_name)
         os.makedirs(dst_dir, exist_ok=True)
         dst_path = os.path.join(dst_dir, f"pseudo_{os.path.basename(img_path)}")
@@ -127,7 +134,7 @@ def main():
     generate_pseudo_labels(model, 1.1)
 
     print("\n" + "=" * 50)
-    print("📊 敏感性分析结果汇总：")
+    print("📊 敏感性分析结果汇总 (请将此填入论文)：")
     print(f"τ = 0.80 | 提取数量: {count_08} | Peak Acc: {acc_08 * 100:.2f}%")
     print(f"τ = 0.90 | 提取数量: 970 | Peak Acc: 99.86% (此为已知主实验)")
     print(f"τ = 0.95 | 提取数量: {count_095} | Peak Acc: {acc_095 * 100:.2f}%")
