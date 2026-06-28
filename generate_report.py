@@ -46,7 +46,7 @@ def main():
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.savefig('new_confusion_matrix.png')
-    print("\n✅ 全新的高清混淆矩阵已保存为 'new_confusion_matrix.png'！")
+    print("\n✅ 全新的高清混淆矩阵已保存为 'New_confusion_matrix.png'，请替换论文里的 Figure 8！")
 
 
 if __name__ == "__main__":
