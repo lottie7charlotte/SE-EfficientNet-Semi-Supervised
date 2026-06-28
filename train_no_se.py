@@ -7,43 +7,31 @@ from sklearn.metrics import accuracy_score
 
 from data_loader import get_dataloaders
 from model_no_se import get_pure_efficientnet
-# 引入固定随机种子的函数
 from utils import set_seed
 
-# ==========================================
-# 1. 强制对齐随机种子，确保公平
-# ==========================================
 set_seed(2026)
 
-# ==========================================
-# 2. 基础配置
-# ==========================================
 NUM_CLASSES = 10
-BATCH_SIZE = 4  # 降为 4，拯救显存
+BATCH_SIZE = 4 
 EPOCHS = 15
 LR = 1e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"./data/RS_Classification"
+DATA_ROOT = "./data/RS_Classification"
 SAVE_DIR = "./checkpoints"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 def train_one_epoch(model, loader, criterion, optimizer):
-    """带梯度累加的单轮训练函数"""
     model.train()
     running_loss = 0.0
     all_preds, all_labels = [], []
     pbar = tqdm(loader, desc="Training")
-
     accumulation_steps = 2
     optimizer.zero_grad()
 
     for i, (images, labels) in enumerate(pbar):
         images, labels = images.to(DEVICE), labels.to(DEVICE)
-
         outputs = model(images)
         loss = criterion(outputs, labels)
-
-        # 梯度累加
         loss = loss / accumulation_steps
         loss.backward()
 
@@ -67,14 +55,13 @@ def main():
     train_loader, val_loader, _, _ = get_dataloaders(DATA_ROOT, BATCH_SIZE, num_workers=0)
     model = get_pure_efficientnet(num_classes=NUM_CLASSES, pretrained=True).to(DEVICE)
 
-    # 【核心修改】去掉了冻结代码，实现全量解冻！
     for param in model.parameters():
         param.requires_grad = True
 
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"可训练参数: {trainable:,} (全量解冻)")
 
-    optimizer = optim.Adam(model.parameters(), lr=LR)
+    optimizer = optim.Adam(model.parameters(), lr=LR,weight_decay=1e-4)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
     criterion = nn.CrossEntropyLoss()
 
@@ -82,7 +69,6 @@ def main():
 
     for epoch in range(1, EPOCHS + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer)
-
         model.eval()
         val_correct, val_total = 0, 0
         with torch.no_grad():
