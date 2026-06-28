@@ -14,7 +14,7 @@ SOURCE_DIR = r"./data/NWPU-RESISC45"
 # 新生成的数据集存放位置
 TARGET_DIR = r"./data/RS_Classification"
 
-# 10 个目标类别
+# 你的 10 个目标类别
 CLASSES = [
     "airplane", "airport", "beach", "bridge", "forest",
     "freeway", "harbor", "industrial_area", "parking_lot", "stadium"
