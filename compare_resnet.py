@@ -62,7 +62,7 @@ def train_model(model, train_loader, val_loader, epochs, save_name):
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"可训练参数: {trainable:,} (全量解冻)")
 
-    optimizer = optim.Adam(model.parameters(), lr=LR)
+    optimizer = optim.Adam(model.parameters(), lr=LR,weight_decay=1e-4)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
     criterion = nn.CrossEntropyLoss()
 
