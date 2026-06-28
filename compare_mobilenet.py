@@ -18,6 +18,7 @@ DATA_ROOT = r"./data/RS_Classification"
 SAVE_DIR = "./checkpoints"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
+
 def train_mobilenet(model, train_loader, val_loader, epochs, save_name):
     model = model.to(DEVICE)
     for param in model.parameters():
@@ -26,7 +27,7 @@ def train_mobilenet(model, train_loader, val_loader, epochs, save_name):
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"可训练参数: {trainable:,} (全量解冻)")
 
-    optimizer = optim.Adam(model.parameters(), lr=LR)
+    optimizer = optim.Adam(model.parameters(), lr=LR,weight_decay=1e-4)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
     criterion = nn.CrossEntropyLoss()
 
