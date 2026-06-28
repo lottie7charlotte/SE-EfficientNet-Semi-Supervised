@@ -54,6 +54,10 @@ pip install -r requirements.txt
 ## 3. Dataset Engineering & Splitting
 
 The experimental setup is evaluated on a 10-class geographic land-use subset extracted from the public **NWPU-RESISC45** dataset. The target classes include: `airplane`, `airport`, `beach`, `bridge`, `forest`, `freeway`, `harbor`, `industrial_area`, `parking_lot`, and `stadium`.
+### Dataset & Pre-trained Weights Download
+To ensure strict reproducibility as described in our manuscript, the exact 10-class dataset splits (7,000 images) and the pre-trained `.pth` model weights have been archived on Zenodo. 
+You can directly download the `RS_Classification.zip` and weight files from our official repository:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20995485.svg)](https://doi.org/10.5281/zenodo.20995485)
 
 ### Steps to prepare the data:
 1. Download the benchmark dataset from the Official NWPU-RESISC45 Repository.
