@@ -12,7 +12,7 @@ from utils import set_seed
 
 # ================== 配置区 ==================
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DATA_ROOT = r"E:\Project_Final\data\RS_Classification"
+DATA_ROOT = r"./data/RS_Classification"
 NUM_CLASSES = 10
 BATCH_SIZE = 4
 ACCUMULATION_STEPS = 2
@@ -39,7 +39,6 @@ def train_and_eval_supervised(model, train_loader, val_loader, test_loader):
             images, labels = images.to(DEVICE), labels.to(DEVICE)
             outputs = model(images)
 
-            # 【保留好孩子的梯度累加，保护您的 4GB 显存】
             loss = criterion(outputs, labels) / ACCUMULATION_STEPS
             loss.backward()
 
@@ -47,7 +46,7 @@ def train_and_eval_supervised(model, train_loader, val_loader, test_loader):
                 optimizer.step()
                 optimizer.zero_grad()
 
-        # Validation (只看验证集，绝对不碰测试集)
+        # Validation (只看验证集，不碰测试集)
         model.eval()
         val_correct, val_total = 0, 0
         with torch.no_grad():
@@ -62,13 +61,12 @@ def train_and_eval_supervised(model, train_loader, val_loader, test_loader):
         # 早停逻辑：验证集创新高时，保存模型权重
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            # 【修复 GPT 的致命 Bug：必须深拷贝，否则保存的权重会跟着变！】
             best_state = copy.deepcopy(model.state_dict())
 
         scheduler.step()
 
     # ==================================================
-    # 终极测试：所有 Epoch 跑完后，加载最好的权重，只测一次！
+    # 终极测试：所有 Epoch 跑完后，加载最好的权重，只测一次
     # ==================================================
     model.load_state_dict(best_state)
     model.eval()
